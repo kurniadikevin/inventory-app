@@ -64,7 +64,7 @@ exports.product_detail = (req, res, next) => {
         product: results.product,
         numberOfStock : results.product.numberOfStock,
         price : results.product.price,
-        category : results.product.category.name
+        category : results.product.category
       });
     }
   );

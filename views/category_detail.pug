@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1 Title: #{title}
+
+ 
+  p #[strong Category:] #{category_name}
+  if category_name === 'Cassette'
+    p A sealed plastic unit containing a length of audiotape, videotape, film, etc. wound on a pair of spools, for insertion into a recorder or playback device.
+  else if category_name === 'Vinyl'
+    p The LP (from "long playing"[1] or "long play") is an analog sound storage medium, a phonograph record format characterized by: a speed of 33+1⁄3 rpm; a 12- or 10-inch (30- or 25-cm) diameter; use of the "microgroove" groove specification; and a vinyl (a copolymer of vinyl chloride acetate) composition disk. Introduced by Columbia in 1948, it was soon adopted as a new standard by the entire record industry. Apart from a few relatively minor refinements and the important later addition of stereophonic sound, it remained the standard format for record albums (during a period in popular music known as the album era)[2] until its gradual replacement from the 1980s to the early 2000s, first by cassettes, then by compact discs, and finally by digital music distribution.
+  else if category_name === 'CompactDisc'
+    p The compact disc (CD) is a digital optical disc data storage format that was co-developed by Philips and Sony to store and play digital audio recordings. In August 1982, the first compact disc was manufactured. It was then released in October 1982 and branded as Digital Audio Compact Disc. The format was later adapted (as CD-ROM) for general-purpose data storage. Several other formats were further derived, including write-once audio and data storage (CD-R), rewritable media (CD-RW), Video CD (VCD), Super Video CD (SVCD), Photo CD, Picture CD, Compact Disc-Interactive (CD-i) and Enhanced Music CD.
+  else 
+    p Information not found.
