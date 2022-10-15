@@ -1,6 +1,7 @@
 const Category = require("../models/category");
 const Product = require("../models/product");
 const async = require("async");
+const { body, validationResult } = require("express-validator");
 
 exports.index = (req, res) => {
   async.parallel(
@@ -69,15 +70,88 @@ exports.product_detail = (req, res, next) => {
     }
   );
 };
+
+
 // Display product create form on GET.
 exports.product_create_get = (req, res) => {
-  res.send("NOT IMPLEMENTED: Product create GET");
+
+  async.parallel({
+    categories(callback){
+      Category.find(callback)
+    },
+  },(err, results) => {
+    if (err) {
+      return next(err);
+    }
+  res.render('product_form',
+  {title : 'Create New Product',
+    category : results.categories});
+})
 };
 
 // Handle product create on POST.
-exports.product_create_post = (req, res) => {
-  res.send("NOT IMPLEMENTED: Product create POST");
-};
+exports.product_create_post = [
+  //validate and sanitize form input
+  body("name", "Product name required").trim().isLength({ min: 1 }).escape(),
+  body("description", "Product description required").trim().isLength({ min: 1 }).escape(),
+  body("category", "Category name required").escape(),
+  body("price", "Price required").trim().isLength({ min: 1 }).escape(),
+  body("numberOfStock", "Number of stock required").trim().isLength({ min: 1 }).escape(),
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a Book object with escaped and trimmed data.
+    const product = new Product({
+      name: req.body.name,
+      description : req.body.description,
+      category : req.body.category,
+      price : req.body.price,
+      numberOfStock : req.body.numberOfStock
+    });
+////////////////////////////////////////
+if (!errors.isEmpty()) {
+  // There are errors. Render form again with sanitized values/error messages.
+
+  // Get all authors and genres for form.
+  async.parallel(
+    {
+      categories(callback){
+        Category.find(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+
+       // Mark our selected genres as checked.
+       for (const category of results.categories) {
+        if (product.category.includes(category._id)) {
+          category.checked = "true";
+        }
+      }
+
+      res.render('product_form',
+        {title : 'Create New Product',
+        category : results.categories});
+    });
+    return;
+  }
+   // Data from form is valid. Save book.
+   product.save((err) => {
+    if (err) {
+      return next(err);
+    }
+    // Successful: redirect to new book record.
+    res.redirect(product.url);
+  });
+  }
+];
+ 
+
 
 // Display product delete form on GET.
 exports.product_delete_get = (req, res) => {
