@@ -3,4 +3,5 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  a(href="/catalog")  Catalog 
+  div Total Product : #{data.product_count}
+  div Total Category : #{data.category_count}
