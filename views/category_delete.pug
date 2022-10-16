@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h2 #{title}: 
+  h4 #{categoryName}
+  p #{info}
+
+ 
+    form(method='POST' action='')
+      div.form-group
+        input#categoryid.form-control(type='hidden',name='categoryid', required='true', value=category._id )
+
+      button.btn.btn-primary(type='submit') Delete

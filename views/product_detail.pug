@@ -4,7 +4,14 @@ block content
   h1 Title: #{title}
 
   p #[strong Name:] #{name}
+  p #[strong Description:] #{description}
   p #[strong Category:] 
     a(href=category.url) #{category.name}
   p #[strong Copies:] #{numberOfStock}
   p #[strong Price:] #{price}$
+
+  hr
+  p
+    a(href=product.url+'/delete') Delete product
+  p
+    a(href=product.url+'/update') Update Book
